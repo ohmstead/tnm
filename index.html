@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<meta name="description" content="Fast AJCC head and neck cancer staging reference for students. Educational use only.">
+<title>H&N Staging — AJCC</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🩺</text></svg>">
+<link rel="manifest" href="manifest.webmanifest">
+<style>
+:root{
+  --bg:#fbfbfd; --surface:#fff; --surface-2:#f2f3f7; --line:#dcdfe6;
+  --ink:#15171c; --ink-2:#5a6070; --accent:#0b5cad; --accent-ink:#fff;
+  --warn-bg:#fff5e6; --warn-line:#e0a44a; --warn-ink:#6b4405;
+  --v9-bg:#e8f2ff; --v9-ink:#0b4a8f;
+  --e8-bg:#eef0f4; --e8-ink:#4a5160;
+  --radius:14px; --tap:52px;
+}
+
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--bg); color:var(--ink);
+  font:16px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  -webkit-text-size-adjust:100%;
+  padding-bottom:env(safe-area-inset-bottom);
+}
+.wrap{max-width:640px;margin:0 auto;padding:0 16px 64px}
+
+/* ---- header with the live TNM chips. Deliberately NOT sticky: it scrolls
+   away so long result pages get the full screen. ---- */
+header{
+  background:var(--bg);
+  border-bottom:1px solid var(--line);
+  padding-top:env(safe-area-inset-top);
+}
+.hbar{max-width:640px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;gap:10px;min-height:56px}
+.back{
+  appearance:none;background:none;border:0;color:var(--accent);
+  font:inherit;font-weight:600;cursor:pointer;padding:8px;margin:-8px;
+  min-height:var(--tap);display:flex;align-items:center;
+}
+.back[hidden]{display:none}
+[hidden]{display:none !important}
+.htitle{font-weight:700;font-size:15px;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tnmbar{max-width:640px;margin:0 auto;padding:0 16px 10px;display:flex;gap:6px;flex-wrap:wrap}
+.tnmchip{
+  appearance:none;font:inherit;font-weight:700;font-size:13px;
+  background:var(--surface-2);color:var(--ink);border:1px solid var(--line);
+  border-radius:999px;padding:5px 12px;cursor:pointer;font-variant-numeric:tabular-nums;
+}
+.tnmchip:disabled{opacity:.45;cursor:default}
+
+/* ---- generic blocks ---- */
+h1{font-size:22px;line-height:1.25;margin:20px 0 6px}
+h2{font-size:17px;margin:26px 0 10px}
+p{margin:0 0 12px}
+.lede{color:var(--ink-2);font-size:14px;margin-bottom:18px}
+.prompt{font-size:19px;font-weight:700;margin:20px 0 4px;line-height:1.3}
+.help{color:var(--ink-2);font-size:13.5px;margin:0 0 14px}
+
+/* ---- radio cards: the main interaction ---- */
+.opts{display:flex;flex-direction:column;gap:8px;margin:0;padding:0;border:0}
+.opt{
+  display:block;width:100%;text-align:left;font:inherit;color:inherit;
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+  padding:14px 16px;min-height:var(--tap);cursor:pointer;
+  transition:border-color .12s,background .12s;
+}
+.opt:hover{border-color:var(--accent)}
+.opt:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.opt .ol{font-weight:650;display:block}
+.opt .od{color:var(--ink-2);font-size:13.5px;margin-top:4px;display:block}
+
+/* ---- site picker ---- */
+.sitelist{display:flex;flex-direction:column;gap:8px;padding-top:16px}
+.badge{
+  display:inline-block;font-size:11px;font-weight:800;letter-spacing:.03em;
+  border-radius:999px;padding:3px 9px;margin-left:8px;vertical-align:1px;white-space:nowrap;
+}
+.badge.v9{background:var(--v9-bg);color:var(--v9-ink)}
+.badge.e8{background:var(--e8-bg);color:var(--e8-ink)}
+
+/* Every site is one line: the name never wraps and never collides with its
+   badge. Sized against the longest name at the narrowest phone width. */
+.sitelist .opt{padding:14px;display:flex;align-items:center;gap:8px}
+.sitelist .ol{
+  flex:1;min-width:0;font-size:15px;white-space:nowrap;
+  overflow:hidden;text-overflow:ellipsis;letter-spacing:-.01em;
+}
+.sitelist .badge{margin-left:0;flex:none;font-size:10px;padding:3px 7px;vertical-align:0}
+@media (max-width:380px){
+  .sitelist .opt{padding:14px 12px}
+  .sitelist .ol{font-size:13.5px}
+  .sitelist .badge{font-size:9.5px;padding:2px 6px}
+}
+@media (max-width:340px){
+  .sitelist{margin:0 -6px}
+  .sitelist .opt{padding:13px 10px;gap:6px}
+  .sitelist .ol{font-size:12px;letter-spacing:-.02em}
+  .sitelist .badge{font-size:9px;padding:2px 5px;letter-spacing:0}
+}
+
+/* ---- result ---- */
+/* Stage and TNM carry equal weight: two columns, same type, split by an em
+   dash. The label row uses an empty cell so it stays in step with the dash. */
+.stagecard{
+  background:var(--surface);border:1px solid var(--line);border-radius:18px;
+  padding:20px 14px;margin:8px 0 16px;
+  display:grid;grid-template-columns:1fr auto 1fr;
+  align-items:baseline;justify-items:center;column-gap:10px;row-gap:4px;
+}
+.stagelabel{font-size:12.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-2);font-weight:700}
+.stage{
+  font-size:clamp(19px,5.4vw,30px);font-weight:800;line-height:1.15;
+  letter-spacing:-.02em;white-space:nowrap;
+}
+.stage.tnm{font-variant-numeric:tabular-nums}
+.stagedash{font-size:clamp(19px,5.4vw,30px);font-weight:300;color:var(--ink-2);line-height:1.15}
+.cp{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0 16px}
+.cpbox{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:14px;text-align:center}
+.cpbox .stage{font-size:30px}
+.cpbox .stagelabel{font-size:11px}
+
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px;margin:0 0 12px}
+.card h3{margin:0 0 8px;font-size:14px;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-2)}
+.card p{font-size:14px}
+.card p:last-child{margin-bottom:0}
+.why{font-size:14px;margin:0}
+.why b{font-variant-numeric:tabular-nums}
+.rule{
+  background:var(--surface-2);border-radius:9px;padding:9px 11px;margin-top:8px;
+  font-size:13px;color:var(--ink-2);font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+.note{
+  background:var(--warn-bg);border:1px solid var(--warn-line);color:var(--warn-ink);
+  border-radius:var(--radius);padding:12px 14px;margin:0 0 12px;font-size:13.5px;
+}
+.note b{font-weight:800}
+.cite{font-size:13px;color:var(--ink-2);margin:0 0 8px;line-height:1.45}
+.cite:last-child{margin-bottom:0}
+.cite a{color:var(--accent)}
+.survival{width:100%;height:auto;border-radius:10px;border:1px solid var(--line);display:block;background:var(--surface-2)}
+.disclaimer{
+  border:1px dashed var(--line);border-radius:var(--radius);padding:12px 14px;
+  color:var(--ink-2);font-size:12.5px;margin:20px 0 0;
+}
+.btnrow{display:flex;gap:8px;margin:16px 0 0;flex-wrap:wrap}
+.btn{
+  appearance:none;font:inherit;font-weight:650;cursor:pointer;
+  border-radius:var(--radius);padding:13px 18px;min-height:var(--tap);
+  border:1px solid var(--line);background:var(--surface);color:var(--ink);flex:1;
+}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:transparent}
+ul.notes{margin:0;padding-left:20px;font-size:14px}
+ul.notes li{margin-bottom:8px}
+ul.notes li:last-child{margin-bottom:0}
+a{color:var(--accent)}
+.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+</style>
+</head>
+<body>
+<header>
+  <div class="hbar">
+    <button class="back" id="back" hidden>&#8249;&nbsp;Back</button>
+    <div class="htitle" id="htitle">H&amp;N Staging</div>
+  </div>
+  <div class="tnmbar" id="tnmbar"></div>
+</header>
+<main class="wrap" id="app" aria-live="polite"></main>
+<script type="module" src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,50 @@
+name: Test and deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  test:
+    # The staging audit gates deployment. If a rule is missing, ambiguous, or
+    # uncited, the site does not ship.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Exhaustive staging audit
+        run: node test/selftest.js
+      - name: REVIEW.md is up to date with data/
+        run: |
+          node test/make-review.js > /tmp/REVIEW.md
+          diff -u REVIEW.md /tmp/REVIEW.md || {
+            echo "::error::REVIEW.md is stale. Run: node test/make-review.js > REVIEW.md"
+            exit 1
+          }
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: '.'
+      - id: deployment
+        uses: actions/deploy-pages@v4

@@ -1,0 +1,9 @@
+{
+  "name": "H&N TNM Staging (AJCC)",
+  "short_name": "H&N Staging",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#0f1115",
+  "theme_color": "#0f1115",
+  "description": "Fast AJCC head and neck cancer staging reference for students. Educational use only."
+}
