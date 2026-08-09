@@ -324,24 +324,6 @@ function renderResult(site, st) {
     }
   }
 
-  // Quote the criteria that were actually met for each category.
-  const criteria = AXES.map((axis) => {
-    const spec = resolveSpec(specFor(site, axis, basis), st.pre);
-    const d = describeCategory(spec, vals[axis]);
-    return d?.detail
-      ? `<p class="why"><b>${esc(vals[axis])}</b> — ${esc(d.detail)}</p>`
-      : `<p class="why"><b>${esc(vals[axis])}</b></p>`;
-  }).join('');
-
-  const preSummary = Object.entries(st.pre)
-    .map(([k, v]) => {
-      const q = (site.preQuestions || []).find((x) => x.id === k);
-      const o = q?.options.find((x) => x.value === v);
-      return o ? `${esc(q.prompt)}: <b>${esc(o.label)}</b>` : '';
-    })
-    .filter(Boolean)
-    .join(' · ');
-
   htitle.textContent = site.short;
 
   app.innerHTML = `
@@ -357,13 +339,6 @@ function renderResult(site, st) {
     ${site.stageGroupCaveat ? `<div class="note"><b>Check this stage label.</b> ${esc(site.stageGroupCaveat)}</div>` : ''}
 
     ${survivalHTML(site, basis, result.stage)}
-
-    <div class="card">
-      <h3>Why this stage</h3>
-      ${preSummary ? `<p class="why">${preSummary}</p>` : ''}
-      ${criteria}
-      <div class="rule">${esc(result.rule.source)}</div>
-    </div>
 
     ${
       site.notes?.length
