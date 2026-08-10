@@ -23,6 +23,7 @@ const app = document.getElementById('app');
 const tnmbar = document.getElementById('tnmbar');
 const htitle = document.getElementById('htitle');
 const backBtn = document.getElementById('back');
+const homeBtn = document.getElementById('home');
 
 
 /* ------------------------------------------------------------------ *
@@ -139,6 +140,7 @@ stage a real patient. Always confirm against the current AJCC Cancer Staging Man
 function renderPicker() {
   htitle.textContent = 'H&N Staging';
   backBtn.hidden = true;
+  homeBtn.hidden = true; // already home
   tnmbar.innerHTML = '';
 
   app.innerHTML = `
@@ -378,6 +380,7 @@ function render() {
 
   htitle.innerHTML = `${esc(site.short)}${editionBadge(site)}`;
   backBtn.hidden = false;
+  homeBtn.hidden = false;
   renderTnmBar(site, st);
 
   const next = nextQuestion(site, st);
@@ -391,6 +394,9 @@ function render() {
 }
 
 backBtn.addEventListener('click', () => history.back());
+homeBtn.addEventListener('click', () => {
+  location.hash = '#/';
+});
 window.addEventListener('hashchange', render);
 render();
 

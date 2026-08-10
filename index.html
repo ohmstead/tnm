@@ -36,11 +36,12 @@ header{
   padding-top:env(safe-area-inset-top);
 }
 .hbar{max-width:640px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;gap:10px;min-height:56px}
-.back{
+.back,.home{
   appearance:none;background:none;border:0;color:var(--accent);
   font:inherit;font-weight:600;cursor:pointer;padding:8px;margin:-8px;
   min-height:var(--tap);display:flex;align-items:center;
 }
+.home{margin-left:auto}
 .back[hidden]{display:none}
 [hidden]{display:none !important}
 .htitle{font-weight:700;font-size:15px;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -165,6 +166,7 @@ a{color:var(--accent)}
   <div class="hbar">
     <button class="back" id="back" hidden>&#8249;&nbsp;Back</button>
     <div class="htitle" id="htitle">H&amp;N Staging</div>
+    <button class="home" id="home" hidden>Home</button>
   </div>
   <div class="tnmbar" id="tnmbar"></div>
 </header>
