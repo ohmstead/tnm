@@ -4,7 +4,7 @@
 // copy of the staging rules after a correction is published, and this app makes
 // clinical-teaching claims that must be correctable the moment they are fixed.
 // So: always try the network, fall back to cache only when offline.
-const CACHE = 'hn-staging-v3';
+const CACHE = 'hn-staging-v4';
 const ASSETS = [
   './', './index.html', './app.js', './engine.js',
   './data/sites.js', './data/common.js', './data/survival.js',

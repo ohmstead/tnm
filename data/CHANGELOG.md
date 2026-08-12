@@ -3,6 +3,36 @@
 Every change to a staging rule belongs here, so a reviewer can see what moved
 and when. Cite the source for each change.
 
+## 2026-08-12 — added soft tissue sarcoma of the head and neck (chapter 40)
+
+New site `sarcoma`, from slide 12 of `HN_staging.pptx`. No existing site changed.
+
+- **Edition:** AJCC 8th edition, effective 2018-01-01. Confirmed still 8th
+  edition in the AJCC Current Staging System 2026 table (Part IX, chapter 40).
+- **Source and verification:** the deck's four tables (T, N, M, histologic
+  grade) were checked word-for-word against the CAP *Protocol for the
+  Examination of Specimens From Patients With Soft Tissue Tumors* (Other • Soft
+  Tissue 4.0.1.0), which reproduces the AJCC 8e definitions. Exact match,
+  including the T4a/T4b split that some secondary summaries omit.
+  <https://cap.objects.frb.io/protocols/cp-other-softtissue-17protocol-4010.pdf>
+- **Peer-reviewed citations:** Cates JMM, *Head Neck* 2019;41(7):2359-2366
+  (doi:10.1002/hed.25701, SEER n=2756) and Lee NCJ et al., *Oral Oncol*
+  2021;114:105137 (doi:10.1016/j.oraloncology.2020.105137, SEER n=546).
+- **No prognostic stage groups.** AJCC publishes none for this chapter — the
+  8th edition introduced a head-and-neck-specific T classification but withheld
+  stage groupings for want of data. The app reports T, N, M and FNCLCC grade
+  and states plainly why there is no stage. Cates (2019), Lee (2021) and
+  Salunkhe et al. (ASTRO 2023 abstract, linked on the slide) each propose a
+  *different* grouping; none is AJCC-endorsed and none is implemented here.
+  This matches the instruction on slide 12 of the deck.
+- **Grade** is FNCLCC (differentiation + mitotic count + necrosis; 2–3 = G1,
+  4–5 = G2, 6–8 = G3) and is asked after T/N/M via the new `postQuestions`
+  slot, then shown beside the TNM where other sites show a stage.
+- **Scope exclusions recorded in the site's notes:** the AJCC soft tissue
+  sarcoma system does not apply to angiosarcoma, embryonal or alveolar
+  rhabdomyosarcoma, Kaposi sarcoma, or dermatofibrosarcoma protuberans, and
+  does not stage sarcomas arising within the dura.
+
 ## 2026-08-09 — display labels and picker order
 
 No staging rule, category definition, or citation changed.

@@ -16,6 +16,19 @@ import {
 
 export const AXES = ['T', 'N', 'M'];
 
+/**
+ * Questions asked AFTER T/N/M rather than before.
+ *
+ * Only soft tissue sarcoma uses this, for FNCLCC grade. Grade is not part of
+ * the TNM string, but for that chapter it is the rest of the AJCC answer, and
+ * asking it first — the way `preQuestions` are asked — would put a pathology
+ * detail ahead of the tumour itself. Answers land in the same `pre` namespace,
+ * so URL serialisation, `when` clauses and the audit need no special case.
+ */
+export function postQuestions(site) {
+  return site.postQuestions || [];
+}
+
 /** True when an item's skipWhen condition is satisfied by the answers so far. */
 export function skipped(item, answers) {
   return (
@@ -44,7 +57,7 @@ export function stepsOf(spec) {
 export function autofill(site, st) {
   const basis = st.basis || basesFor(site)[0];
   let next = st;
-  for (const q of site.preQuestions || []) {
+  for (const q of [...(site.preQuestions || []), ...postQuestions(site)]) {
     if (skipped(q, next.pre) || next.pre[q.id]) continue;
     if (q.options.length === 1 && !q.options[0].redirect) {
       next = { ...next, pre: { ...next.pre, [q.id]: q.options[0].value } };
@@ -74,8 +87,8 @@ export function axisValue(site, st, axis) {
 
 /**
  * The first unanswered question given the current answers, or null when the
- * staging is complete. Order: pre-questions, staging basis, then T, N, M —
- * skipping any axis a previous answer forces (Tis forces N0 M0).
+ * staging is complete. Order: pre-questions, staging basis, T, N, M, then any
+ * post-questions — skipping any axis a previous answer forces (Tis forces N0 M0).
  */
 export function nextQuestion(site, stIn) {
   const st = autofill(site, stIn);
@@ -101,6 +114,11 @@ export function nextQuestion(site, stIn) {
 
     const value = axisValue(site, st, axis);
     if (value) Object.assign(forced, forcedBy(spec, value) || {});
+  }
+
+  for (const q of postQuestions(site)) {
+    if (skipped(q, st.pre)) continue;
+    if (!st.pre[q.id]) return { kind: 'pre', q };
   }
 
   return null;
