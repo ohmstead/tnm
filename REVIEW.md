@@ -315,18 +315,20 @@ Evaluated top to bottom, first match wins.
 ### Survival figure — oropharynx-hpv-clinical
 
 - **Endpoint:** Overall survival
-- **Figure:** Kaplan-Meier overall survival by clinical stage I / II / III
+- **Figure:** Figure 3 (AHR-New stage panels, training and validation cohorts) — Kaplan-Meier overall survival by clinical stage I / II / III
 - **Citation:** O’Sullivan B, Huang SH, Su J, et al. Development and validation of a staging system for HPV-related oropharyngeal cancer by the International Collaboration on Oropharyngeal cancer Network for Staging (ICON-S). Lancet Oncol. 2016;17(4):440-451.
 - **Source:** <https://pubmed.ncbi.nlm.nih.gov/26936027/>
+- **Paper (local copy):** `assets/survival/papers/1-s2.0-S1470204515005604-main.pdf`
 - **Image file expected at:** `assets/survival/oropharynx-hpv-clinical.png`
 - **Note:** The AJCC Version 9 clinical stage-group table is unchanged from the 8th edition, which was derived from ICON-S. The cN definitions feeding it did change in Version 9.
 
 ### Survival figure — oropharynx-hpv-pathological
 
 - **Endpoint:** Overall survival
-- **Figure:** Kaplan-Meier overall survival by AJCC9V pathological stage
+- **Figure:** Figure 3 (A) AJCC8E derivation, (B) AJCC9V derivation, (C) AJCC9V validation — Kaplan-Meier overall survival by pathological stage
 - **Citation:** Ho AS, et al. Derivation and validation of the AJCC9V pathological stage classification for HPV-positive oropharyngeal carcinoma: a multicentre registry analysis. Lancet Oncol. 2025.
 - **Source:** <https://pubmed.ncbi.nlm.nih.gov/40645195/>
+- **Paper (local copy):** `assets/survival/papers/1-s2.0-S1470204525002815-main.pdf`
 - **Image file expected at:** `assets/survival/oropharynx-hpv-pathological.png`
 
 ### Notes and pitfalls shown to students
@@ -1113,11 +1115,13 @@ Evaluated top to bottom, first match wins.
 
 ### Survival figure — cutaneous
 
-- **Endpoint:** Disease-specific survival
-- **Figure:** Disease-specific survival by 8th edition T and stage
-- **Citation:** Karia PS, et al. Comparison of Tumor Classifications for Cutaneous Squamous Cell Carcinoma of the Head and Neck in the 7th vs 8th Edition of the AJCC Cancer Staging Manual. JAMA Dermatol. 2018.
+- **Endpoint:** Overall survival (680 primary head & neck cutaneous SCC tumours in 459 patients, 2000-2009)
+- **Figure:** Figure, panel D — Kaplan-Meier overall survival by AJCC 8 T category (T1, T2, T3, T4b)
+- **Citation:** Karia PS, Morgan FC, Califano JA, Schmults CD. Comparison of Tumor Classifications for Cutaneous Squamous Cell Carcinoma of the Head and Neck in the 7th vs 8th Edition of the AJCC Cancer Staging Manual. JAMA Dermatol. 2018;154(2):175-181.
 - **Source:** <https://pubmed.ncbi.nlm.nih.gov/29261835/>
+- **Paper (local copy):** `assets/survival/papers/jamadermatology_karia_2017_oi_170055.pdf`
 - **Image file expected at:** `assets/survival/cutaneous.png`
+- **Note:** This figure stratifies by T CATEGORY, not by prognostic stage group — the paper validates the 8th edition T classification. Note also that T2 and T3 overlap almost completely, while T4b separates sharply.
 
 ### Notes and pitfalls shown to students
 

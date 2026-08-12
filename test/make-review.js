@@ -206,6 +206,7 @@ for (const site of SITES) {
     w(`- **Figure:** ${s.figure}`);
     w(`- **Citation:** ${s.citation}`);
     w(`- **Source:** <${s.url}>`);
+    if (s.paperFile) w(`- **Paper (local copy):** \`${s.paperFile}\``);
     w(`- **Image file expected at:** \`assets/survival/${s.key}.png\``);
     if (Object.keys(s.stages).length) {
       w(`- **Published estimates:** ${Object.entries(s.stages).map(([k, v]) => `${k}: ${v}`).join('; ')}`);
