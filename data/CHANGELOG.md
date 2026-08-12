@@ -3,43 +3,35 @@
 Every change to a staging rule belongs here, so a reviewer can see what moved
 and when. Cite the source for each change.
 
-## 2026-08-12 — first bundled survival figures
+## 2026-08-12 — added soft tissue sarcoma of the head and neck (chapter 40)
 
-No staging rule or category definition changed. One survival **endpoint** was
-corrected, because the figure that was actually available reports a different
-one from what the entry claimed.
+New site `sarcoma`, from slide 12 of `HN_staging.pptx`. No existing site changed.
 
-- Bundled three figures: `oropharynx-hpv-clinical.png` (O'Sullivan 2016 ICON-S,
-  *Lancet Oncol* 17(4):440-451, Figure 3 AHR-New stage panels),
-  `oropharynx-hpv-pathological.png` (Ho 2025, *Lancet Oncol* 26(8), Figure 3
-  panels A-C), and `cutaneous.png` (Karia 2018, *JAMA Dermatol*
-  154(2):175-181, Figure panel D). Every other site still renders the citation
-  card only.
-- **`cutaneous.endpoint` corrected from "Disease-specific survival" to "Overall
-  survival."** The bundled image is panel D of the Karia figure, whose y-axis is
-  overall survival probability. Disease-specific death appears in panel C of the
-  same figure, but as a cumulative *incidence* curve, not a survival curve.
-  Labelling panel D as DSS would have misreported the endpoint on the result
-  screen. Source: `assets/survival/papers/jamadermatology_karia_2017_oi_170055.pdf`.
-- Added the Karia cohort (680 tumours in 459 patients, 2000-2009) and a note
-  that this figure stratifies by **T category, not stage group** — the paper
-  validates the 8th edition T classification. The result card is headed
-  "Survival — stage X", so without that note the curves read as stage curves.
-- Recorded the exact figure number for each of the three, replacing the previous
-  generic descriptions.
-- Added a `paperFile` field pointing at a local PDF of each source paper under
-  `assets/survival/papers/`, emitted into `REVIEW.md`, so the endpoint and
-  cohort can be re-verified against the paper later.
-- `oral-cavity.png` is present in `assets/survival/` but is deliberately **not**
-  committed and not wired up, so the `oral-cavity` entry is unchanged and that
-  site still renders the citation card only. The figure's numbers-at-risk table
-  totals 1788 patients, which is inconsistent with the NCDB observed-survival
-  source that entry cites, and the figure's title is cropped off. Attempts to
-  identify it against the source deck and the validation literature failed.
-  `assets/survival/README.md` records the evidence so the search can resume
-  without repeating it. **The entry's existing NCDB/Lydiatt citation should be
-  treated as unverified for figure-sourcing purposes** — it remains the cited
-  basis for that site's stage-group survival claim, which is unchanged here.
+- **Edition:** AJCC 8th edition, effective 2018-01-01. Confirmed still 8th
+  edition in the AJCC Current Staging System 2026 table (Part IX, chapter 40).
+- **Source and verification:** the deck's four tables (T, N, M, histologic
+  grade) were checked word-for-word against the CAP *Protocol for the
+  Examination of Specimens From Patients With Soft Tissue Tumors* (Other • Soft
+  Tissue 4.0.1.0), which reproduces the AJCC 8e definitions. Exact match,
+  including the T4a/T4b split that some secondary summaries omit.
+  <https://cap.objects.frb.io/protocols/cp-other-softtissue-17protocol-4010.pdf>
+- **Peer-reviewed citations:** Cates JMM, *Head Neck* 2019;41(7):2359-2366
+  (doi:10.1002/hed.25701, SEER n=2756) and Lee NCJ et al., *Oral Oncol*
+  2021;114:105137 (doi:10.1016/j.oraloncology.2020.105137, SEER n=546).
+- **No prognostic stage groups.** AJCC publishes none for this chapter — the
+  8th edition introduced a head-and-neck-specific T classification but withheld
+  stage groupings for want of data. The app reports T, N, M and FNCLCC grade
+  and states plainly why there is no stage. Cates (2019), Lee (2021) and
+  Salunkhe et al. (ASTRO 2023 abstract, linked on the slide) each propose a
+  *different* grouping; none is AJCC-endorsed and none is implemented here.
+  This matches the instruction on slide 12 of the deck.
+- **Grade** is FNCLCC (differentiation + mitotic count + necrosis; 2–3 = G1,
+  4–5 = G2, 6–8 = G3) and is asked after T/N/M via the new `postQuestions`
+  slot, then shown beside the TNM where other sites show a stage.
+- **Scope exclusions recorded in the site's notes:** the AJCC soft tissue
+  sarcoma system does not apply to angiosarcoma, embryonal or alveolar
+  rhabdomyosarcoma, Kaposi sarcoma, or dermatofibrosarcoma protuberans, and
+  does not stage sarcomas arising within the dura.
 
 ## 2026-08-09 — display labels and picker order
 

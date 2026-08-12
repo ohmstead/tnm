@@ -189,7 +189,21 @@ function renderTnmBar(site, st) {
         : `<button class="tnmchip" disabled>${axis}</button>`
     );
   }
+  // A post-question answer (FNCLCC grade) rides in the same bar as the TNM
+  // chips, because for its chapter it is part of the answer, not a preamble.
+  for (const q of site.postQuestions || []) {
+    const v = st.pre[q.id];
+    if (v) chips.push(`<button class="tnmchip" data-clear-pre="${esc(q.id)}">${esc(v)}</button>`);
+  }
+
   tnmbar.innerHTML = chips.join('');
+  tnmbar.querySelectorAll('[data-clear-pre]').forEach((el) =>
+    el.addEventListener('click', () => {
+      const next = { ...st, pre: { ...st.pre } };
+      delete next.pre[el.dataset.clearPre];
+      writeState(next);
+    })
+  );
   tnmbar.querySelectorAll('[data-clear]').forEach((el) =>
     el.addEventListener('click', () => {
       const scope = el.dataset.clear;
@@ -301,9 +315,14 @@ function renderResult(site, st) {
   const basis = st.basis || basesFor(site)[0];
   const vals = withForced(site, st);
   const rules = stageRulesFor(site, basis);
-  const result = resolveStage(rules, { ...vals, pre: st.pre });
 
-  if (!result) {
+  // Some chapters have no prognostic stage at all. AJCC publishes T, N, M and
+  // grade for head and neck soft tissue sarcoma and no stage groupings, so the
+  // honest result screen leads with TNM + grade and says why there is no stage,
+  // rather than borrowing someone's unendorsed proposal.
+  const result = site.noStageGroups ? null : resolveStage(rules, { ...vals, pre: st.pre });
+
+  if (!site.noStageGroups && !result) {
     app.innerHTML = `<div class="note"><b>No stage group defined.</b> AJCC defines no prognostic
       stage for ${esc(formatTNM(vals, basis))} in this chapter. This is a gap in the app's data —
       please report it.</div>`;
@@ -338,7 +357,24 @@ function renderResult(site, st) {
 
   htitle.textContent = site.short;
 
-  app.innerHTML = `
+  // Same two-column card either way. Where a site has stage groups the pair is
+  // stage + TNM; where it has none it is TNM + the post-question that completes
+  // the AJCC answer (grade, for sarcoma).
+  const headline = site.noStageGroups
+    ? (() => {
+        const q = (site.postQuestions || [])[0];
+        return `
+    <div class="stagecard">
+      <div class="stagelabel">TNM</div>
+      <div class="stagedash" aria-hidden="true"></div>
+      <div class="stagelabel">${esc(q?.short || q?.prompt || 'Stage')}</div>
+      <div class="stage tnm">${esc(formatTNM(vals, basis))}</div>
+      <div class="stagedash" aria-hidden="true">—</div>
+      <div class="stage">${esc(q ? st.pre[q.id] : '—')}</div>
+    </div>
+    <div class="note"><b>No prognostic stage group.</b> ${esc(site.noStageGroups)}</div>`;
+      })()
+    : `
     <div class="stagecard">
       <div class="stagelabel">Prognostic</div>
       <div class="stagedash" aria-hidden="true"></div>
@@ -346,11 +382,14 @@ function renderResult(site, st) {
       <div class="stage">Stage ${esc(result.stage)}</div>
       <div class="stagedash" aria-hidden="true">—</div>
       <div class="stage tnm">${esc(formatTNM(vals, basis))}</div>
-    </div>
+    </div>`;
+
+  app.innerHTML = `
+    ${headline}
     ${cpHTML}
     ${site.stageGroupCaveat ? `<div class="note"><b>Check this stage label.</b> ${esc(site.stageGroupCaveat)}</div>` : ''}
 
-    ${survivalHTML(site, basis, result.stage)}
+    ${result ? survivalHTML(site, basis, result.stage) : ''}
 
     ${
       site.notes?.length

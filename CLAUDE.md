@@ -66,7 +66,15 @@ regression.
   It deliberately returns null when the two bases ask different questions (v9
   HPV oropharynx), because there the answers aren't comparable and a comparison
   would mislead.
-- **Only 3 of 12 sites are AJCC Version 9** (salivary, nasopharynx, HPV+
+- **Soft tissue sarcoma has no prognostic stage, on purpose.** AJCC publishes
+  no stage groupings for chapter 40; the site sets `noStageGroups` to the
+  explanation, keeps `stageGroups: { shared: [] }`, and the result screen shows
+  TNM + FNCLCC grade where other sites show a stage. Three published proposals
+  exist and disagree with each other — do not implement one.
+- **`postQuestions` are asked after T/N/M** (sarcoma grade only). They land in
+  the same `pre` namespace as `preQuestions`, so URL state and `when` clauses
+  need no special case; only the ordering differs.
+- **Only 3 of 13 sites are AJCC Version 9** (salivary, nasopharynx, HPV+
   oropharynx). Everything else is 8th edition. The app labels this everywhere
   because assuming the wrong edition is the most common staging error.
 

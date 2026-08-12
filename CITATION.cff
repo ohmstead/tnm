@@ -4,7 +4,8 @@ message: "Educational use only. Not for clinical practice. Cite the underlying A
 type: software
 abstract: >-
   A static, mobile-first web app for learning AJCC head and neck cancer staging.
-  Covers all 11 AJCC head and neck chapters plus thyroid, distinguishing the
-  three chapters now on Version 9 from those still on the 8th edition. Every
+  Covers all 11 AJCC head and neck chapters plus thyroid and soft tissue
+  sarcoma, distinguishing the three chapters now on Version 9 from those still
+  on the 8th edition. Every
   staging rule carries both an AJCC citation and a peer-reviewed publication.
 license: MIT

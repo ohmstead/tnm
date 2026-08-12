@@ -19,6 +19,10 @@ Every rule the app uses is listed below with the source it is cited to. Rules ar
 - **Cervical Nodes & Unknown Primary** (chapter 6)
 - **Nasal Cavity and Paranasal Sinuses** (chapter 12)
 
+### Chapters with no prognostic stage group
+
+- **Soft Tissue Sarcoma** (chapter 40) — AJCC defines no prognostic stage groups for soft tissue sarcoma of the head and neck. The 8th edition introduced a head-and-neck-specific T classification but withheld stage groupings for want of data, so the complete AJCC answer for this disease is TNM plus FNCLCC grade. Stage groupings have been proposed in the literature (Cates 2019; Lee 2021; Salunkhe 2023) and they disagree with one another; none is AJCC-endorsed, so this app does not report one.
+
 ### Open questions
 
 - **Cutaneous Carcinoma** — The stage IVA / IVB labelling for this site follows a secondary reference, where IVA is advanced M0 disease and IVB is M1 disease. It could not be confirmed against a primary AJCC source, and several references instead print a single undivided Stage IV for cutaneous carcinoma of the head and neck. The T/N/M-to-stage boundaries are unaffected — only the IVA/IVB naming is in question. Confirm against the AJCC manual before relying on the label.
@@ -37,6 +41,7 @@ Every rule the app uses is listed below with the source it is cited to. Rules ar
 - [Nasopharynx](#nasopharynx) — chapter 9, AJCC Version 9
 - [Nasal Cavity and Paranasal Sinuses](#sinonasal) — chapter 12, AJCC 8th edition
 - [Mucosal Melanoma](#mucosal-melanoma) — chapter 14, AJCC 8th edition
+- [Soft Tissue Sarcoma](#sarcoma) — chapter 40, AJCC 8th edition
 
 <a id="oral-cavity"></a>
 
@@ -1567,6 +1572,97 @@ Evaluated top to bottom, first match wins.
 - A single positive node moves a T3 tumour straight from stage III to stage IVA.
 - Nodal staging is binary — no size thresholds and no ENE subdivision, unlike every mucosal squamous cell site.
 - pM0 and MX are not valid categories. Use cM0, cM1, or pM1.
+
+---
+
+<a id="sarcoma"></a>
+
+## Soft Tissue Sarcoma
+
+| | |
+|---|---|
+| AJCC chapter | 40 |
+| Edition | **AJCC 8th edition**, effective 2018-01-01 |
+| Staging bases | clinical, pathological (identical — no toggle shown) |
+| Verified against source deck | Yes |
+
+**Staging system:** AJCC Cancer Staging Manual, 8th edition, Chapter 40: Soft Tissue Sarcoma of the Head and Neck. T, N, M and FNCLCC grade only — AJCC publishes no prognostic stage groups for this chapter.  
+<https://www.facs.org/media/c5ik5tkr/ajcc-current-staging-system-2026.pdf>
+
+**Publication:** Cates JMM. Staging soft tissue sarcoma of the head and neck: evaluation of the AJCC 8th edition revised T classifications. Head Neck. 2019;41(7):2359-2366. (SEER, n=2756 — validates the revised T classification and PROPOSES, but does not establish, stage groupings.) doi:10.1002/hed.25701 PMID:30779403  
+<https://onlinelibrary.wiley.com/doi/10.1002/hed.25701>
+
+**Publication:** Lee NCJ, Eskander A, Miccio JA, et al. Evaluation of head and neck soft tissue sarcoma 8th edition pathologic staging system and proposal of a novel stage grouping system. Oral Oncol. 2021;114:105137. (SEER, n=546, NCDB validation — a second, DIFFERENT proposed grouping. Also not AJCC-endorsed.) doi:10.1016/j.oraloncology.2020.105137 PMID:33422859  
+<https://pubmed.ncbi.nlm.nih.gov/33422859/>
+
+**Publication:** College of American Pathologists. Protocol for the Examination of Specimens From Patients With Soft Tissue Tumors (Other • Soft Tissue 4.0.1.0) — reproduces the AJCC 8th edition head and neck pT, pN and FNCLCC grade definitions used here.  
+<https://cap.objects.frb.io/protocols/cp-other-softtissue-17protocol-4010.pdf>
+
+> **Sourcing note.** Three published groups have proposed prognostic stage groupings for this disease and they do not agree with each other. None has been adopted by AJCC. This app therefore reports no stage.
+
+*As provided in the source deck:* Source URLs provided on slide 12 of HN_staging.pptx (Medscape overview; Cates 2019; Salunkhe RR et al., ASTRO 2023 meeting abstract, Int J Radiat Oncol Biol Phys — a conference abstract proposing stage groupings, not an AJCC standard) — <https://www.redjournal.org/article/S0360-3016(23)05001-0/fulltext>
+
+### T categories
+
+| Category | Criteria | Source |
+|---|---|---|
+| `T4b` | Tumour with brain parenchymal invasion, carotid artery encasement, prevertebral muscle invasion, or central nervous system involvement via perineural spread. | AJCC 8th edition, chapter 40, head and neck soft tissue sarcoma T4b |
+| `T4a` | Tumour with orbital invasion, skull base/dural invasion, invasion of central compartment viscera, involvement of facial skeleton, or invasion of pterygoid muscles. | AJCC 8th edition, chapter 40, head and neck soft tissue sarcoma T4a |
+| `T3` | Tumour >4 cm. | AJCC 8th edition, chapter 40, head and neck soft tissue sarcoma T3 |
+| `T2` | Tumour >2 cm and ≤4 cm. | AJCC 8th edition, chapter 40, head and neck soft tissue sarcoma T2 |
+| `T1` | Tumour ≤2 cm. | AJCC 8th edition, chapter 40, head and neck soft tissue sarcoma T1 |
+
+<details><summary>Questions asked to derive this category</summary>
+
+- **Local extent** (`local`)
+  - `confined` No invasion of adjoining structures
+  - `moderate` Orbit, skull base/dura, central compartment viscera, facial skeleton, or pterygoid muscles
+  - `advanced` Brain parenchyma, carotid artery, prevertebral muscle, or CNS via perineural spread
+- **Greatest dimension** (`size`) — skipped when {"local":["moderate","advanced"]}
+  - `le2` ≤2 cm
+  - `gt2le4` >2 cm and ≤4 cm
+  - `gt4` >4 cm
+
+</details>
+
+### N categories
+
+| Category | Criteria | Source |
+|---|---|---|
+| `N0` | No regional lymph node metastasis. | AJCC 8th edition, chapter 40, head and neck soft tissue sarcoma N0 |
+| `N1` | Regional lymph node metastasis. | AJCC 8th edition, chapter 40, head and neck soft tissue sarcoma N1 |
+
+### M categories
+
+| Category | Criteria | Source |
+|---|---|---|
+| `M0` | No distant metastasis. There is no pM0 category — this renders as cM0. | AJCC 8th edition, chapter 40, head and neck soft tissue sarcoma M0 |
+| `M1` | Distant metastasis. | AJCC 8th edition, chapter 40, head and neck soft tissue sarcoma M1 |
+
+### Questions asked after T/N/M
+
+**Histologic grade (G)** — AJCC 8th edition uses the FNCLCC system: score tumour differentiation (1–3), mitotic count (1–3) and necrosis (0–2), then sum. Total 2–3 = G1, 4–5 = G2, 6–8 = G3.
+
+- `G1` G1 — FNCLCC total score 2 or 3.
+- `G2` G2 — FNCLCC total score 4 or 5.
+- `G3` G3 — FNCLCC total score 6 to 8.
+- `GX` GX — Grade cannot be assessed, or an ungraded sarcoma. Common on core biopsy and after neoadjuvant treatment.
+
+### Prognostic stage groups
+
+> **None.** AJCC defines no prognostic stage groups for soft tissue sarcoma of the head and neck. The 8th edition introduced a head-and-neck-specific T classification but withheld stage groupings for want of data, so the complete AJCC answer for this disease is TNM plus FNCLCC grade. Stage groupings have been proposed in the literature (Cates 2019; Lee 2021; Salunkhe 2023) and they disagree with one another; none is AJCC-endorsed, so this app does not report one.
+
+The app shows the TNM and the grade on the result screen and reports no stage.
+
+### Notes and pitfalls shown to students
+
+- There is no prognostic stage group for this disease. AJCC 8th edition created a head-and-neck-specific T classification for soft tissue sarcoma but published no stage groupings, citing insufficient data. The complete AJCC answer is T, N, M and FNCLCC grade.
+- Stage groupings have been proposed by at least three groups (Cates 2019; Lee 2021; Salunkhe 2023) and they do not agree — Lee, for example, proposes a single 5 cm size cut-off rather than the AJCC 2 cm and 4 cm thresholds. Treat any "stage" you see quoted for head and neck sarcoma as that author's proposal, not as AJCC staging.
+- The size thresholds are 2 cm and 4 cm. Sarcoma of the trunk and extremities (chapter 41) uses 5, 10 and 15 cm and DOES have stage groups. Applying the extremity system to a head and neck primary is the commonest error here.
+- Grade drives management and prognosis far more than T does in this disease, which is why AJCC records it separately. Grade is FNCLCC, not the NCI system: differentiation + mitotic count + necrosis, summed.
+- The AJCC soft tissue sarcoma system does not apply to angiosarcoma, embryonal or alveolar rhabdomyosarcoma, Kaposi sarcoma, or dermatofibrosarcoma protuberans, and sarcomas arising within the dura are not well staged by it.
+- Nodal metastasis is uncommon and is recorded as present or absent only. There is no ENE subdivision, unlike every mucosal squamous cell site in this app.
+- pM0 and MX are not valid categories. Use cM0, cM1 or pM1.
 
 ---
 
