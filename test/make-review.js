@@ -43,6 +43,13 @@ if (unverified.length) {
   for (const s of unverified) w(`- **${s.name}** (chapter ${s.chapter})`);
   w();
 }
+const noGroups = SITES.filter((s) => s.noStageGroups);
+if (noGroups.length) {
+  w('### Chapters with no prognostic stage group');
+  w();
+  for (const s of noGroups) w(`- **${s.name}** (chapter ${s.chapter}) — ${s.noStageGroups}`);
+  w();
+}
 if (caveats.length) {
   w('### Open questions');
   w();
@@ -145,8 +152,31 @@ for (const site of SITES) {
     }
   }
 
-  // Stage groups.
-  const groupSets = site.stageGroups.shared
+  if (site.postQuestions?.length) {
+    w('### Questions asked after T/N/M');
+    w();
+    for (const q of site.postQuestions) {
+      w(`**${q.prompt}**${q.help ? ` — ${q.help}` : ''}`);
+      w();
+      for (const o of q.options) {
+        w(`- \`${o.value}\` ${o.label}${o.detail ? ` — ${o.detail}` : ''}`);
+      }
+      w();
+    }
+  }
+
+  // Stage groups — or a plain statement that AJCC publishes none.
+  if (site.noStageGroups) {
+    w('### Prognostic stage groups');
+    w();
+    w(`> **None.** ${site.noStageGroups}`);
+    w();
+    w('The app shows the TNM and the grade on the result screen and reports no stage.');
+    w();
+  }
+  const groupSets = site.noStageGroups
+    ? []
+    : site.stageGroups.shared
     ? [['clinical and pathological', site.stageGroups.shared]]
     : basesFor(site).map((b) => [b, stageRulesFor(site, b)]);
   for (const [label, rules] of groupSets) {

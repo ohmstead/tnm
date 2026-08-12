@@ -96,11 +96,20 @@ console.log('\nExhaustive coverage audit');
 for (const site of SITES) {
   let combosChecked = 0;
 
+  // A site may legitimately have no prognostic stage groups (AJCC publishes
+  // none for head and neck soft tissue sarcoma). Such a site must SAY so, and
+  // must not smuggle in a rule table anyway.
+  const noStage = !!site.noStageGroups;
+
   for (const basis of basesFor(site)) {
     const rules = stageRulesFor(site, basis);
     if (!rules) {
       fail(`${site.id} / ${basis}: no stage-group rules`);
       continue;
+    }
+    if (noStage) {
+      if (rules.length) fail(`${site.id} / ${basis}: declares no stage groups but defines ${rules.length}`);
+      else ok();
     }
 
     for (const pre of preCombinations(site.preQuestions)) {
@@ -134,6 +143,7 @@ for (const site of SITES) {
       // A T value may force other axes (Tis forces N0 M0, because carcinoma
       // in situ cannot metastasise). Forced combinations are the only ones
       // reachable in the app, so unreachable ones are not required to stage.
+      if (noStage) continue;
       for (const T of axisValues(tSpec)) {
         const forced = forcedBy(tSpec, T) || {};
         for (const N of axisValues(nSpec)) {
@@ -202,6 +212,20 @@ for (const site of SITES) {
         }
       }
       const basis = st.basis || basesFor(site)[0];
+
+      // Sites with no stage groups must still finish every post-question,
+      // otherwise the result screen would show a blank where the grade goes.
+      if (site.noStageGroups) {
+        for (const q of site.postQuestions || []) {
+          if (!st.pre[q.id]) {
+            fail(`${site.id}: flow completed without answering post-question ${q.id}`);
+            return;
+          }
+        }
+        ok();
+        return;
+      }
+
       const res = resolveStage(stageRulesFor(site, basis), { ...vals, pre: st.pre });
       if (!res) {
         fail(
@@ -461,7 +485,23 @@ const DERIVED_GOLDEN = [
   ['thyroid', 'clinical', 'T', { ete: 'none', size: 'gt4' }, 'T3a', { histology: 'medullary' },
     'AJCC 8e thyroid T3a'],
   ['thyroid', 'clinical', 'T', { ete: 'strap' }, 'T3b', { histology: 'medullary' },
-    'AJCC 8e thyroid T3b: strap muscle ETE at any size']
+    'AJCC 8e thyroid T3b: strap muscle ETE at any size'],
+
+  // Soft tissue sarcoma of the head and neck (deck slide 12 / CAP protocol).
+  // The 2 cm and 4 cm thresholds are head-and-neck specific — chapter 41 uses
+  // 5/10/15 cm for the trunk and extremities.
+  ['sarcoma', 'clinical', 'T', { local: 'confined', size: 'le2' }, 'T1', {},
+    'AJCC 8e ch40: tumour <=2 cm'],
+  ['sarcoma', 'clinical', 'T', { local: 'confined', size: 'gt2le4' }, 'T2', {},
+    'AJCC 8e ch40: tumour >2 to <=4 cm'],
+  ['sarcoma', 'clinical', 'T', { local: 'confined', size: 'gt4' }, 'T3', {},
+    'AJCC 8e ch40: tumour >4 cm'],
+  ['sarcoma', 'clinical', 'T', { local: 'moderate' }, 'T4a', {},
+    'AJCC 8e ch40 T4a: orbit, skull base/dura, central compartment viscera, facial skeleton, pterygoids'],
+  ['sarcoma', 'clinical', 'T', { local: 'advanced' }, 'T4b', {},
+    'AJCC 8e ch40 T4b: brain parenchyma, carotid encasement, prevertebral muscle, CNS via perineural spread'],
+  ['sarcoma', 'pathological', 'T', { local: 'confined', size: 'gt4' }, 'T3', {},
+    'AJCC 8e ch40: pT definitions are identical to cT']
 ];
 
 console.log('\nDerivation golden cases');
@@ -512,6 +552,15 @@ for (const site of SITES) {
     for (const rule of stageRulesFor(site, basis) || []) {
       if (!rule.source) fail(`${site.id} / ${basis} / stage ${rule.stage}: missing source`);
     }
+  }
+
+  // Absence of a stage group is itself a claim about AJCC, so it must be
+  // explained to the student rather than left as a blank screen.
+  const hasGroups = basesFor(site).some((b) => (stageRulesFor(site, b) || []).length);
+  if (!hasGroups && !site.noStageGroups) {
+    fail(`${site.id}: no stage groups and no explanation of why`);
+  } else if (!hasGroups) {
+    ok();
   }
 }
 console.log('  every category and stage rule carries a source');

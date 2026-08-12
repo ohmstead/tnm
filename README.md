@@ -10,7 +10,8 @@ with the rule that produced it and the sources behind it.
 
 ## What it covers
 
-All 11 AJCC head and neck chapters plus thyroid — 12 selectable sites.
+All 11 AJCC head and neck chapters plus thyroid and soft tissue sarcoma —
+13 selectable sites.
 
 As of the [AJCC current staging system table, revised 2026](https://www.facs.org/media/c5ik5tkr/ajcc-current-staging-system-2026.pdf),
 **three head and neck chapters have moved to Version 9** and the rest are still

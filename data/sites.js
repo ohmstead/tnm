@@ -1,6 +1,7 @@
 // Site registry. Order here is the order shown in the picker: teaching order,
 // roughly commonest first and following the anatomy from the lips backwards,
-// with the rarer chapters last. Mucosal melanoma sits at the end.
+// with the rarer chapters last. Mucosal melanoma and soft tissue sarcoma —
+// the two that do not stage like a mucosal carcinoma — sit at the end.
 
 import oropharynxHpv from './sites/oropharynx-hpv.js';
 import nasopharynx from './sites/nasopharynx.js';
@@ -14,6 +15,7 @@ import cervicalUnknownPrimary from './sites/cervical-unknown-primary.js';
 import mucosalMelanoma from './sites/mucosal-melanoma.js';
 import cutaneous from './sites/cutaneous.js';
 import thyroid from './sites/thyroid.js';
+import sarcoma from './sites/sarcoma.js';
 
 export const SITES = [
   oralCavity,
@@ -27,7 +29,8 @@ export const SITES = [
   cervicalUnknownPrimary,
   nasopharynx,
   sinonasal,
-  mucosalMelanoma
+  mucosalMelanoma,
+  sarcoma
 ];
 
 export const SITE_BY_ID = Object.fromEntries(SITES.map((s) => [s.id, s]));
