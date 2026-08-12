@@ -105,10 +105,20 @@ function survivalHTML(site, basis, stage) {
   if (!s) return '';
   const estimate = s.stages?.[stage];
   let html = `<div class="card"><h3>Survival — stage ${esc(stage)}</h3>`;
-  html += `<img class="survival" alt="Survival curve by stage — ${esc(
-    s.figure
-  )}" src="assets/survival/${esc(s.key)}.png"
-      onerror="this.remove();document.getElementById('sv-missing-${esc(s.key)}').hidden=false">`;
+  // Several of these are wide multi-panel figures. Inside the card they scale
+  // down to ~310px on a phone, which is too small to read the axes, so the
+  // image links to itself at full resolution.
+  html += `<a class="survival-zoom" href="assets/survival/${esc(
+    s.key
+  )}.png" target="_blank" rel="noopener">
+      <img class="survival" alt="Survival curve by stage — ${esc(
+        s.figure
+      )}" src="assets/survival/${esc(s.key)}.png" loading="lazy" decoding="async"
+        onerror="this.parentElement.remove();document.getElementById('sv-missing-${esc(
+          s.key
+        )}').hidden=false">
+      <span class="survival-hint">Tap the figure to open it full size</span>
+    </a>`;
   html += `<p class="cite" id="sv-missing-${esc(s.key)}" hidden style="margin-top:10px">
       <em>Figure not bundled. ${esc(s.figure)} — see the source below.</em></p>`;
   if (estimate) {

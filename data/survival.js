@@ -8,12 +8,16 @@
 // must never be conflated), the cohort, and the published survival estimate
 // for each stage.
 //
-// The figure images themselves are NOT bundled. Published KM figures are
-// copyrighted and are not redistributed here. Drop your own copies into
-//     assets/survival/<key>.png
-// and they will be displayed automatically; until then the app renders the
-// citation card with the published estimate and a link to the source figure.
-// See assets/survival/README.md for the naming convention.
+// Figure images live in assets/survival/<key>.png and are displayed
+// automatically when present; when one is absent the app renders the citation
+// card with the published estimate and a link to the source figure instead, so
+// the app still works with that directory empty. See assets/survival/README.md
+// for the naming convention and for the licensing caveat on bundling a
+// published figure.
+//
+// `paperFile`, where present, points at a local PDF of the source paper under
+// assets/survival/papers/ — kept so the figure, endpoint and cohort recorded
+// here can be re-checked against the paper without hunting for it again.
 //
 // `key` is the image basename. Sites whose clinical and pathological stage
 // groups differ carry one entry per basis.
@@ -25,7 +29,9 @@ export const SURVIVAL = {
     citation:
       'O’Sullivan B, Huang SH, Su J, et al. Development and validation of a staging system for HPV-related oropharyngeal cancer by the International Collaboration on Oropharyngeal cancer Network for Staging (ICON-S). Lancet Oncol. 2016;17(4):440-451.',
     url: 'https://pubmed.ncbi.nlm.nih.gov/26936027/',
-    figure: 'Kaplan-Meier overall survival by clinical stage I / II / III',
+    figure:
+      'Figure 3 (AHR-New stage panels, training and validation cohorts) — Kaplan-Meier overall survival by clinical stage I / II / III',
+    paperFile: 'assets/survival/papers/1-s2.0-S1470204515005604-main.pdf',
     note: 'The AJCC Version 9 clinical stage-group table is unchanged from the 8th edition, which was derived from ICON-S. The cN definitions feeding it did change in Version 9.',
     stages: {}
   },
@@ -35,7 +41,9 @@ export const SURVIVAL = {
     citation:
       'Ho AS, et al. Derivation and validation of the AJCC9V pathological stage classification for HPV-positive oropharyngeal carcinoma: a multicentre registry analysis. Lancet Oncol. 2025.',
     url: 'https://pubmed.ncbi.nlm.nih.gov/40645195/',
-    figure: 'Kaplan-Meier overall survival by AJCC9V pathological stage',
+    figure:
+      'Figure 3 (A) AJCC8E derivation, (B) AJCC9V derivation, (C) AJCC9V validation — Kaplan-Meier overall survival by pathological stage',
+    paperFile: 'assets/survival/papers/1-s2.0-S1470204525002815-main.pdf',
     stages: {}
   },
 
@@ -142,11 +150,19 @@ export const SURVIVAL = {
 
   cutaneous: {
     key: 'cutaneous',
-    endpoint: 'Disease-specific survival',
+    // The bundled figure is panel D of the Karia figure, which plots OVERALL
+    // survival. Panels A-C of the same figure are cumulative incidence of local
+    // recurrence, nodal metastasis and disease-specific death — not survival
+    // curves — so the endpoint here is overall survival, not DSS.
+    endpoint: 'Overall survival',
+    cohort: '680 primary head & neck cutaneous SCC tumours in 459 patients, 2000-2009',
     citation:
-      'Karia PS, et al. Comparison of Tumor Classifications for Cutaneous Squamous Cell Carcinoma of the Head and Neck in the 7th vs 8th Edition of the AJCC Cancer Staging Manual. JAMA Dermatol. 2018.',
+      'Karia PS, Morgan FC, Califano JA, Schmults CD. Comparison of Tumor Classifications for Cutaneous Squamous Cell Carcinoma of the Head and Neck in the 7th vs 8th Edition of the AJCC Cancer Staging Manual. JAMA Dermatol. 2018;154(2):175-181.',
     url: 'https://pubmed.ncbi.nlm.nih.gov/29261835/',
-    figure: 'Disease-specific survival by 8th edition T and stage',
+    figure:
+      'Figure, panel D — Kaplan-Meier overall survival by AJCC 8 T category (T1, T2, T3, T4b)',
+    paperFile: 'assets/survival/papers/jamadermatology_karia_2017_oi_170055.pdf',
+    note: 'This figure stratifies by T CATEGORY, not by prognostic stage group — the paper validates the 8th edition T classification. Note also that T2 and T3 overlap almost completely, while T4b separates sharply.',
     stages: {}
   },
 
